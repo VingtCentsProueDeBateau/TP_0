@@ -9,6 +9,7 @@ continuer: bool = True
 diff: int = 0
 essai: int
 nombreMin: int = 0
+jeu: bool = True
 
 while continuer:
     while diff < 1 or diff > 5:
@@ -38,48 +39,30 @@ while continuer:
             case _:
                 print("ERREUR. REDÉMARRER.")
 
-    essai = 0
+    essai = 1
     nombre = random.randint(0, nombreMax)
 
 
-    while essai <= essaisMax:
-        devine = int(input(f"({essai}/{essaisMax}) 0 < ? < {nombreMax} : "))
-        if devine > nombreMax or devine < nombreMin:
+    while essai <= essaisMax and jeu == True:
+        devine = int(input(f"({essai}/{essaisMax}) {nombreMin} < ? < {nombreMax} : "))
+        if devine > nombreMax or devine < nombreMin and essai != essaisMax:
             print(f"{ROUGE}Nombre en dehors des limites. Veuillez réessayer.{RESET}")
             essai += 1
-        elif devine < nombre:
+        elif devine < nombre and essai != essaisMax:
             nombreMin = devine
             essai += 1
-        elif devine > nombre:
+        elif devine > nombre and essai != essaisMax:
             nombreMax = devine
             essai += 1
-        else:
+        elif devine == nombre and essai != essaisMax:
             print("Félicitations, vous avez trouvé le nombre mystère!")
             essai = essaisMax + 1
+        elif essai == essaisMax:
+            print(f"Vous avez échoué! Le nombre était: {nombre}")
+            jeu = False
 
-    if essai == essaisMax:
-        print(f"Vous avez échoué! le nombre était: {nombre}")
-
-continuer = bool(input("Voulez-vous recommencer? '1' pour OUI / '0' pour NON; "))
-
-
-
-
-
-
-
-
-#    if devine == nombre:
-#        print(f"{VERT}Bonne réponse!{RESET}")
-#        break
-#    else:
-#        print(f"{ROUGE}Mauvaise réponse.{RESET}")
-#        if devine < nombre:
-#            print(f"{BLEU_CLAIR}TROP FROID{RESET}")
-#        elif devine > nombre:
-#            print(f"{JAUNE_CLAIR}TROP CHAUD{RESET}")
-#        essais += 1
-#        
-#    if essais == 0:
-#        print(f"Le nombre était {nombre}")
-#continuer = int(input("Continuer? 1 pour OUI, 0 pour NON; "))
+if jeu == False:
+    continuer = bool(input("Voulez-vous recommencer? '1' pour OUI / '0' pour NON; "))
+    if continuer:
+        jeu = True
+    else: jeu = False
